@@ -1,0 +1,15 @@
+names:
+- No helmet
+- Triple riding
+- Using mobile
+- Wheeling
+nc: 4
+roboflow:
+  license: Public Domain
+  project: tvd-kp9qw
+  url: https://universe.roboflow.com/traffic-violation-detection/tvd-kp9qw/dataset/2
+  version: 2
+  workspace: traffic-violation-detection
+test: ../test/images
+train: ../train/images
+val: ../valid/images
