@@ -55,7 +55,7 @@ This project employs a robust dual-inference strategy to maximize detection capa
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YourUsername/Traffic-Signal-Violation-Detection.git
+git clone https://github.com/pypi-ahmad/Traffic-Signal-Violation-Detection.git
 cd Traffic-Signal-Violation-Detection
 ```
 
