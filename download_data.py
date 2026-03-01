@@ -14,6 +14,10 @@ def download_dataset():
     
     if not api_key:
         print("ROBOFLOW_API_KEY not found in environment variables.")
+        if not sys.stdin.isatty():
+            print("Error: Non-interactive shell detected and ROBOFLOW_API_KEY is not set.")
+            sys.exit(1)
+
         api_key = input("Please enter your Roboflow API Key: ").strip()
         
         if not api_key:

@@ -1,5 +1,6 @@
 import os
 import shutil
+import torch
 from ultralytics import YOLO
 
 def train_model():
@@ -23,16 +24,19 @@ def train_model():
 
     # 2. Dataset Path
     # The dataset was downloaded to 'TVD-2' directory in Phase 1.
-    dataset_yaml = "TVD-2/data.yaml"
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    dataset_yaml = os.path.join(project_root, "TVD-2", "data.yaml")
     
     if not os.path.exists(dataset_yaml):
         print(f"Error: Dataset configuration file not found at {dataset_yaml}")
-        return
+        return False
+
+    device = 0 if torch.cuda.is_available() else "cpu"
 
     # 3. Training Configuration
     # Targeted for RTX 4060 (8GB VRAM)
     print("Starting training with the following configuration:")
-    print(f"  - Device: 0 (GPU)")
+    print(f"  - Device: {device}")
     print(f"  - Batch Size: 8")
     print(f"  - Epochs: 50")
     print(f"  - Image Size: 640")
@@ -43,25 +47,26 @@ def train_model():
             data=dataset_yaml,
             epochs=50,
             imgsz=640,
-            device=0,               # Force usage of GPU 0
+            device=device,
             batch=8,                # Batch size 8 fits comfortably in 8GB VRAM for Large models
             amp=True,               # Enable Automatic Mixed Precision for faster training/less memory
-            project=os.path.join(os.getcwd(), 'runs', 'train'),   # Root directory for training runs
+            project=os.path.join(project_root, 'runs', 'train'),
             name='traffic_violation_large', # subdirectory name
             exist_ok=True,          # Overwrite existing experiment if name exists (optional, keeping it clean)
             plots=True,             # Generate plots (confusion matrix, labels, etc.)
-            save=True               # Save checkpoints
+            save=True,              # Save checkpoints
+            seed=42
         )
         print("Training completed successfully.")
 
     except Exception as e:
         print(f"An error occurred during training: {e}")
-        return
+        return False
 
     # 4. Save Best Model to Root
     # Ultralytics saves weights in project/name/weights/
-    best_weights_path = os.path.join('runs', 'train', 'traffic_violation_large', 'weights', 'best.pt')
-    destination_path = 'best.pt'
+    best_weights_path = os.path.join(project_root, 'runs', 'train', 'traffic_violation_large', 'weights', 'best.pt')
+    destination_path = os.path.join(project_root, 'best.pt')
 
     if os.path.exists(best_weights_path):
         print(f"Copying best model from {best_weights_path} to {destination_path}...")
@@ -70,5 +75,7 @@ def train_model():
     else:
         print(f"Warning: Could not find best model at {best_weights_path}")
 
+    return True
+
 if __name__ == "__main__":
-    train_model()
+    raise SystemExit(0 if train_model() else 1)

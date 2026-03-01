@@ -10,6 +10,6 @@ roboflow:
   url: https://universe.roboflow.com/traffic-violation-detection/tvd-kp9qw/dataset/2
   version: 2
   workspace: traffic-violation-detection
-test: ../test/images
-train: ../train/images
-val: ../valid/images
+test: test/images
+train: train/images
+val: valid/images
