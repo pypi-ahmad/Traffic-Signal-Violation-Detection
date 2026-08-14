@@ -422,3 +422,5 @@ Traffic-Signal-Violation-Detection/
 ## License
 
 No `LICENSE` file is currently present in this repository.
+
+<p align="center">Made with ❤️ by Ahmad Mujtaba</p>
